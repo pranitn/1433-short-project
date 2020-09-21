@@ -1,0 +1,96 @@
+
+> #F test for state fixed effects 
+> pFtest(m5,m4)
+
+	F test for individual effects
+
+data:  spend_aer ~ gps_away_from_home + spend_all + merchants_all +  ...
+F = 91.862, df1 = 50, df2 = 8512, p-value < 2.2e-16
+alternative hypothesis: significant effects
+
+
+> #F test for time fixed effects
+> pFtest(m6,m4)
+
+	F test for twoways effects
+
+data:  spend_aer ~ gps_away_from_home + spend_all + merchants_all +  ...
+F = 78.515, df1 = 217, df2 = 8345, p-value < 2.2e-16
+alternative hypothesis: significant effects
+
+
+> #Close txt file
+> sink()
+
+> #Check relevance (F test) for instrument in regression 7
+> linearHypothesis(rel7, "bus_close_DTRUE", test = "F")
+Linear hypothesis test
+
+Hypothesis:
+bus_close_DTRUE = 0
+
+Model 1: restricted model
+Model 2: gps_away_from_home ~ spend_all + merchants_all + merchants_ss70 + 
+    new_death_rate + bus_close_D
+
+  Res.Df Df      F    Pr(>F)    
+1   8346                        
+2   8345  1 67.973 < 2.2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+> #Check relevance (F test) for instrument in regression 8
+> linearHypothesis(rel8, "sip_DTRUE", test = "F")
+Linear hypothesis test
+
+Hypothesis:
+sip_DTRUE = 0
+
+Model 1: restricted model
+Model 2: gps_away_from_home ~ spend_all + merchants_all + merchants_ss70 + 
+    new_death_rate + sip_D
+
+  Res.Df Df      F    Pr(>F)    
+1   8346                        
+2   8345  1 301.12 < 2.2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+> #Check relevance (F test) for instruments in regression 9
+> linearHypothesis(rel9, c("bus_close_DTRUE", "sip_DTRUE"), test = "F")
+Linear hypothesis test
+
+Hypothesis:
+bus_close_DTRUE = 0
+sip_DTRUE = 0
+
+Model 1: restricted model
+Model 2: gps_away_from_home ~ spend_all + merchants_all + merchants_ss70 + 
+    new_death_rate + bus_close_D + sip_D
+
+  Res.Df Df      F    Pr(>F)    
+1   8346                        
+2   8344  2 158.23 < 2.2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+> #Check exogeneity (J test) for instruments in regression 9
+> linearHypothesis(exo9, c("bus_close_DTRUE", "sip_DTRUE"), test = "Chisq")
+Linear hypothesis test
+
+Hypothesis:
+bus_close_DTRUE = 0
+sip_DTRUE = 0
+
+Model 1: restricted model
+Model 2: residuals(m9) ~ spend_all + merchants_all + merchants_ss70 + 
+    new_death_rate + bus_close_D + sip_D
+
+  Res.Df Df  Chisq Pr(>Chisq)  
+1   8346                       
+2   8344  2 7.7256    0.02101 *
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+> #close txt file
+> sink()
