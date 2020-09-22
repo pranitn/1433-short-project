@@ -108,7 +108,17 @@ pFtest(m6,m4)
 sink()
 
 #Table 1: Output tables for regressions 1-6 to tex file
-stargazer(m1,m2,m3,m4,m5, m6, type = 'html', out = 't1.html')
+stargazer(m1,m2,m3,m4,m5,m6, 
+          title = "Table 1: OLS/Fixed Effects Regressions of Discretionary Spending on Time Away from Home",
+          covariate.labels = c("Time Away from Home", "Total Spending", "Small Business Openings", "Leisure/Hospitality Business Openings", "New COVID Death Rate"),
+          dep.var.caption = "Dependent Variable: Arts/Entertainment/Recreation Credit/Debit Card Spending", 
+          dep.var.labels.include  = FALSE,  
+          omit.stat = c('ser', 'f'),
+          add.lines = list(c('Fixed Effects', 'No', 'No', 'No', 'No', 'State', 'State'),
+                           c('','','','','','','Time'),
+                           c('Fixed Effects F Statistic', '', '', '', '', '91.862***', '78.515***')),
+          type = 'html', 
+          out = 't1.html')
 
 ##########################################################
 ############Instrumental Variable Regressions#############
@@ -129,7 +139,19 @@ m9df <- na.omit(p_df[,c("spend_aer", "gps_away_from_home",  "spend_all",  "merch
 m9 <- plm(formula = spend_aer ~ gps_away_from_home + spend_all + merchants_all + merchants_ss70 + new_death_rate | . - gps_away_from_home + bus_close_D + sip_D , data = m9df, model = 'within', effect = "twoways")
 
 #Table 2: Output table for regressions 7-9 to tex file 
-stargazer(m7, m8, m9, type = 'html', out = 't2.html')
+stargazer(m7, m8, m9, type = 'html', 
+          title = "Table 2: Instrumental Variable Regressions of Discretionary Spending on Time Away from Home",
+          covariate.labels = c("Time Away from Home", "Total Spending", "Small Business Openings", "Leisure/Hospitality Business Openings", "New COVID Death Rate"),
+          dep.var.caption = "Dependent Variable: Arts/Entertainment/Recreation Credit/Debit Card Spending", 
+          dep.var.labels.include  = FALSE,  
+          omit.stat = c('f'),
+          add.lines = list(c('Fixed Effects', 'State', 'State', 'State'),
+                           c('', 'Time', 'Time', 'Time'),
+                           c('Instrumental Variables', 'Business Closure', 'Shelter in Place', 'Business Closure'),
+                           c('','','','Shelter in Place'),
+                           c('First-stage F Statistic', '', '', ''),
+                           c('J-test (p-value)', '', '', '')),
+          out = 't2.html')
 
 #############################################################
 ############Instrumental Variable Validity Tests#############
