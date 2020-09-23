@@ -61,8 +61,9 @@ ggplot(data = df, aes(x = date)) +
   geom_vline(aes(xintercept = close_nonessential_bus)) +
   geom_vline(aes(xintercept = begin_shelter_in_place), color = 'red') +
   geom_vline(aes(xintercept = begin_reopen), color = 'green') +
-  geom_vline(aes(xintercept = mandate_mask), color = 'blue') +
-  theme(axis.title.x=element_blank(), axis.title.y=element_blank())
+  geom_vline(aes(xintercept = end_shelter_in_place), color = 'blue') +
+  xlab('') +
+  ylab('Change Relative to January Baseline') 
 ggsave("f1.png")
 
 ########################################
@@ -117,8 +118,8 @@ stargazer(m1,m2,m3,m4,m5,m6,
           add.lines = list(c('Fixed Effects', 'No', 'No', 'No', 'No', 'State', 'State'),
                            c('','','','','','','Time'),
                            c('Fixed Effects F Statistic', '', '', '', '', '91.862***', '78.515***')),
-          type = 'html', 
-          out = 't1.html')
+          type = 'latex', 
+          out = 't1.tex')
 
 ##########################################################
 ############Instrumental Variable Regressions#############
@@ -139,19 +140,23 @@ m9df <- na.omit(p_df[,c("spend_aer", "gps_away_from_home",  "spend_all",  "merch
 m9 <- plm(formula = spend_aer ~ gps_away_from_home + spend_all + merchants_all + merchants_ss70 + new_death_rate | . - gps_away_from_home + bus_close_D + sip_D , data = m9df, model = 'within', effect = "twoways")
 
 #Table 2: Output table for regressions 7-9 to tex file 
-stargazer(m7, m8, m9, type = 'html', 
+stargazer(m7, m8, m9,
           title = "Table 2: Instrumental Variable Regressions of Discretionary Spending on Time Away from Home",
           covariate.labels = c("Time Away from Home", "Total Spending", "Small Business Openings", "Leisure/Hospitality Business Openings", "New COVID Death Rate"),
           dep.var.caption = "Dependent Variable: Arts/Entertainment/Recreation Credit/Debit Card Spending", 
           dep.var.labels.include  = FALSE,  
+          column.labels = c('(7)','(8)','(9)'),
+          model.numbers = FALSE,
           omit.stat = c('f'),
           add.lines = list(c('Fixed Effects', 'State', 'State', 'State'),
                            c('', 'Time', 'Time', 'Time'),
                            c('Instrumental Variables', 'Business Closure', 'Shelter in Place', 'Business Closure'),
                            c('','','','Shelter in Place'),
-                           c('First-stage F Statistic', '', '', ''),
-                           c('J-test (p-value)', '', '', '')),
-          out = 't2.html')
+                           c('First-stage F Statistic', '70.778***', '336.79***', '176.3***'),
+                           c('J-test', '', '', '8.2847'),
+                           c('(p-value)', '', '', '(0.016)')),
+          type = 'latex',
+          out = 't2.tex')
 
 #############################################################
 ############Instrumental Variable Validity Tests#############
