@@ -10,5 +10,5 @@
 ### Outputs
 `f1.png`: Figure 1: Mobility and Spending Trends for US States (January - August 2020)\
 `t1.tex`: Table 1: OLS/Fixed Effects Regressions of Discretionary Spending on Time Away from Home\
-`t2.tex`: Table 2: Instrumental Variable Regressions of Discretionary Spending on Time Away from Home
+`t2.tex`: Table 2: Instrumental Variable Regressions of Discretionary Spending on Time Away from Home\
 `tests.txt`: Outputs of significance tests, relevant values included in regression tables
